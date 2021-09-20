@@ -33,6 +33,9 @@ MULT   : '*' ;
 DIV    : '/' ;
 
 WHILE  : 'while' ;
+FOR    : 'for' ;
+IF    : 'if' ;
+ELSE    : 'else' ;
 
 
 ENTERO : DIGITO+ ;
@@ -51,13 +54,16 @@ instrucciones : instruccion instrucciones
               |
               ;
 
-instruccion : declaracion
+instruccion : declaracion PYC
             | iwhile
             | bloque
+            | asignacion PYC
             | oal
+            | forloop
+            | ifelse
             ;
 
-declaracion : tipovar PYC
+declaracion : tipovar
             ;
 
 tipovar : INT secvar
@@ -73,12 +79,25 @@ varopt : COMA secvar
        |
        ;
 
+asignacion : ID '=' ( ENTERO | ID | oal ) ;
+
 /* BLOQUE INSTRUCCION */
 bloque : LLA instrucciones LLC ;
 
 /* INSTRUCCION WHILE */
 iwhile : WHILE PA oal PC instruccion ;
 
+/* INSTRUCCION FOR */
+forloop : FOR PA
+          (declaracion|asignacion) PYC
+          oal PYC
+          asignacion
+          PC 
+          instruccion ;
+
+/* INSTRUCCION IFELSE */
+ifelse: IF PA oal PC instruccion
+        ELSE instruccion;
 
 /* OPERACIONES ARITMETICO LOGICAS */
 oal: oplogica ;
@@ -134,3 +153,4 @@ factor : ENTERO
        | ID
        | PA oal PC
        ;
+       

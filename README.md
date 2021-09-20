@@ -1,3 +1,26 @@
+# Actividad 3 - Estructuras de Control Básicas
+Esta actividad consiste en realizar en ANTLR las expresiones regulares y reglas gramaticales apropiadas para la detección y verificación de declaraciones de variables y estructuras de control para el lenguaje C reducido. Debe aceptar como válidas las siguientes instrucciones:
+
+```C
+int x;
+double x = y;
+char a, b, c;
+int x = 5, y, z = x, w;
+while (x < y) {
+    z = z + 5;
+    w = z;
+}
+for (x = 0; x < 10; x = x + 1)
+w = w + x;
+if (z == 0)
+    w = x;
+else {
+    w = z;
+    z = x;
+}
+```
+
+Completar el proyecto de la actividad anterior para cumplir con esta consigna.
 # Actividad 2 - Operaciones Aritmético-Lógicas
 Esta actividad consiste en realizar en ANTLR las expresiones regulares y reglas gramaticales apropiadas para la detección y verificación de operaciones aritmético-lógicas y la estructura de control while para el lenguaje C reducido. Se dede realizar siguiendo los lineamientos vistos en clases.
 
@@ -97,10 +120,12 @@ factor : ENTERO
 
 Esta actividad consiste en realizar en ANTLR las expresiones regulares y reglas gramaticales apropiadas para la detección y verificación de declaraciones de variables para el lenguaje C reducido. Debe aceptar como válidas las siguientes instrucciones:
 
+```C
 int x;
 double x = y;
 char a, b, c;
 int x = 5, y, z = x, w;
+```
 
 Se debe entregar un archivo comprimido con el proyecto y consignar en el cuadro de texto la URL del proyecto en GitHub.
 
