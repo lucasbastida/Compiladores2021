@@ -36,11 +36,6 @@ public class MyListener extends compiladorBaseListener {
     }
 
     @Override
-    public void exitPrograma(ProgramaContext ctx) {
-        // table.delContexto();
-    }
-
-    @Override
     public void enterInstruccion(InstruccionContext ctx) {
         System.out.println("> instruction: " + ctx.getText());
     }

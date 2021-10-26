@@ -14,10 +14,10 @@ instruccion : declaracionVar ';'
             | iwhile
             | bloque
             | asignacion ';'
-            | oal ';'?
             | forloop
             | ifelse
             | declaracionFn
+            | expr ';'
             ;
 
 declaracionFn: tipovar ID '(' params ')' bloque;
@@ -52,7 +52,7 @@ ifelse
   ;
 
 
-//TODO: functino call?
+
 expr: oal;
 /* OPERACIONES ARITMETICO LOGICAS */
 oal: oplogica ;
@@ -114,6 +114,7 @@ args: expr
     |
     ;
 
+
 SUMA   : '+' ;
 RESTA  : '-' ;
 MULT   : '*' ;
@@ -131,5 +132,5 @@ fragment DIGITO : [0-9] ;
 ID : [a-zA-Z_] [a-zA-Z0-9_]* ;
 
 WS : [ \t\n\r] -> skip;
-COMMENT: '//' .*? '\n' -> skip;
+COMMENT: '//' .*? ('\n'|EOF) -> skip;
 OTRO : . ;

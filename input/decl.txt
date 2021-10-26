@@ -21,4 +21,6 @@ addconparam(2,3);
 
 addconparam(2,Y);
 
-a();
+a();       //no existe la funcion a  
+
+1/3; //asdf asdf
