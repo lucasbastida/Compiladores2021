@@ -10,9 +10,9 @@
             "type": "antlr-debug",
             "request": "launch",
             // Archivo con la gramatica
-            "grammar": "${file}",
+            "grammar": "src/main/java/compiladores2021/compilador.g4",
             // Archivo a parsear
-            "input": "src/actividad3.txt",
+            "input": "input/decl.txt",
             // Simbolo inicial
             "startRule": "programa",
             // Muestra Arbol Sintactico

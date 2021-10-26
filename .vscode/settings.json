@@ -9,6 +9,6 @@
     },
     "antlr4.debug": {
         "visualParseTreeHorizontal": false,
-        "visualParseTreeClustered": true
+        "visualParseTreeClustered": false
     }
 }

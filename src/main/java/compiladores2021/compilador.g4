@@ -4,135 +4,88 @@ grammar compilador;
 package compiladores2021;
 }
 
-fragment DIGITO : [0-9] ;
-
-PA : '(';
-PC : ')';
-LLA : '{' ;
-LLC : '}' ;
-PYC    : ';';
-COMA   : ',' ;
-OR    : '||' ;
-AND   : '&&';
-ISEQ: '==';
-ISNEQ: '!=';
-
-ISLESSTHAN: '<';
-ISGREATHAN: '>';
-ISLESSEQ: '<=';
-ISGREATEQ: '>=';
-
-
-INT    : 'int' ;
-DOUBLE : 'double' ;
-CHAR   : 'char' ;
-
-SUMA   : '+' ;
-RESTA  : '-' ;
-MULT   : '*' ;
-DIV    : '/' ;
-
-WHILE  : 'while' ;
-FOR    : 'for' ;
-IF    : 'if' ;
-ELSE    : 'else' ;
-
-
-ENTERO : DIGITO+ ;
-// NATURAL : DIGITO+ ;
-// ENTERO : '-'? NATURAL ;
-
-ID : [a-zA-Z_] [a-zA-Z0-9_]* ;
-
-WS : [ \t\n\r] -> skip;
-
-OTRO : . ;
-
 programa : instrucciones EOF ;
 
 instrucciones : instruccion instrucciones
               |
               ;
 
-instruccion : declaracion PYC
+instruccion : declaracionVar ';'
             | iwhile
             | bloque
-            | asignacion PYC
-            | oal
+            | asignacion ';'
+            | oal ';'?
             | forloop
             | ifelse
+            | declaracionFn
             ;
 
-declaracion : tipovar
-            ;
-
-tipovar : INT secvar
-        | DOUBLE secvar
-        | CHAR secvar
+declaracionFn: tipovar ID '(' params ')' bloque;
+params  : param
+        | param ',' params
+        |
         ;
 
-secvar : ID varopt
-       | ID '=' ( ENTERO | ID)  varopt
+param : tipovar ID;
+
+declaracionVar : tipovar secvar ;
+
+tipovar : INT | DOUBLE | CHAR | VOID;
+
+secvar : ID varopt            #Decl
+       | ID '=' expr varopt   #Assign
        ;
 
-varopt : COMA secvar
+varopt : ',' secvar
        |
        ;
 
-asignacion : ID '=' ( ENTERO | ID | oal ) ;
+asignacion : ID '=' expr ;
 
-/* BLOQUE INSTRUCCION */
-bloque : LLA instrucciones LLC ;
 
-/* INSTRUCCION WHILE */
-iwhile : WHILE PA oal PC instruccion ;
+iwhile : 'while' '(' expr ')' instruccion ;
+bloque : '{' instrucciones '}' ;
+forloop : 'for' '(' (declaracionVar|asignacion) ';' expr ';' asignacion  ')' instruccion ;
+ifelse
+  : 'if' '(' expr ')' instruccion
+  | 'if' '(' expr ')' instruccion 'else' instruccion
+  ;
 
-/* INSTRUCCION FOR */
-forloop : FOR PA
-          (declaracion|asignacion) PYC
-          oal PYC
-          asignacion
-          PC 
-          instruccion ;
 
-/* INSTRUCCION IFELSE */
-ifelse: IF PA oal PC instruccion
-        ELSE instruccion;
-
+//TODO: functino call?
+expr: oal;
 /* OPERACIONES ARITMETICO LOGICAS */
 oal: oplogica ;
 
 oplogica: prop or;
 
-or: OR oplogica
+or: '||' oplogica
   |
   ;
 
 prop: opcomp and ;
 
-and: AND opcomp and
+and: '&&' opcomp and
    |
    ;
 
-
-
 opcomp: comp opigualdad;
 
-opigualdad: ISEQ opcomp
-              | ISNEQ opcomp
-              |
-              ;
+opigualdad
+  : '==' opcomp
+  | '!=' opcomp
+  |
+  ;
 
 comp: oparit oprela;
 
-oprela: ISGREATHAN oparit oprela
-              | ISLESSTHAN oparit oprela
-              | ISLESSEQ oparit oprela
-              | ISGREATEQ oparit oprela
-              |
-              ;
-
-
+oprela
+  : '>' oparit oprela
+  | '<' oparit oprela
+  | '<=' oparit oprela
+  | '>=' oparit oprela
+  |
+  ;
 
 oparit: term t;
 
@@ -149,8 +102,34 @@ f : MULT factor f
   |
   ;
 
-factor : ENTERO
-       | ID
-       | PA oal PC
+factor : ENTERO           #Int
+       | ID               #Var
+       | ID '(' args ')'  #fnCall
+       | '(' oal ')'      #Paren
        ;
-       
+
+
+args: expr
+    | expr ',' args
+    |
+    ;
+
+SUMA   : '+' ;
+RESTA  : '-' ;
+MULT   : '*' ;
+DIV    : '/' ;
+
+INT: 'int';
+DOUBLE: 'double' ;
+CHAR: 'char' ;
+VOID: 'void';
+
+ENTERO : DIGITO+ ;
+
+fragment DIGITO : [0-9] ;
+
+ID : [a-zA-Z_] [a-zA-Z0-9_]* ;
+
+WS : [ \t\n\r] -> skip;
+COMMENT: '//' .*? '\n' -> skip;
+OTRO : . ;
